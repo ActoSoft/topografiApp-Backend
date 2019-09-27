@@ -12,9 +12,9 @@ const {
     DB_HOST
 } = process.env
 
-console.log(DB_HOST)
+console.log(DB_PASSWORD)
 
-moongose.connect(`mongodb://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}`, 
+moongose.connect(`mongodb://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}`,
     { useNewUrlParser: true }
 )
     .then(connection => {
