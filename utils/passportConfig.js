@@ -1,9 +1,10 @@
 const { Strategy, ExtractJwt } = require('passport-jwt')
+require('dotenv').config()
 const secret = process.env.JWT_SECRET || 'defaultSecret' //Get Secret from .env
 const User = require('../models/User')
 
-const opts = { //Object with the way how the JWT is sent to backend and the Secret Key
-    jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken,
+const opts = {
+    jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
     secretOrKey: secret
 }
 
@@ -14,11 +15,18 @@ module.exports = passport => {
             User.findById(payload.id) //Getting User in the DB via ID
                 .then(user => {
                     if (user) {
-                        const { name, email } = user
+                        const {
+                            firstName,
+                            lastName,
+                            email,
+                            role
+                         } = user
                         return done(null, { //Method done finalizes the Strategy and allow the auth
                             id: user._id,
-                            name,
-                            email
+                            firstName,
+                            lastName,
+                            email,
+                            role
                         })
                     }
                     return done(null, false) //If somethind failed, passing false as 2do param.

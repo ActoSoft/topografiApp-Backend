@@ -3,8 +3,10 @@ const router = express.Router() //Creating a instance object of Router class of 
 const User = require('../models/User')
 const bcrypt = require('bcryptjs') //Library to encrypt passwords
 const jwt = require('jsonwebtoken') //JWT library
-const passport = require('passport')
+require('dotenv').config()
 const secret = process.env.JWT_SECRET || 'defaultSecret'
+
+console.log(secret)
 
 router.post('/register',
     (req, res) => {
@@ -71,12 +73,13 @@ router.post('/login', (req, res) => {
                         jwt.sign(
                             payload,
                             secret,
-                            {expiresIn: 36000 }, //Lifetime of the token (in second)
+                            { expiresIn: 36000 }, //Lifetime of the token (in second)
                             (err, token) => {
                                 if(err) res.status(500) //If error, 500 response
                                 /* Response with a ok message, the token in the
                                 form Bearer token (JWT convention) and the
                                 info of the user in the DB */
+                                console.log(token)
                                 res.json({
                                     message: 'ok',
                                     token: `Bearer ${token}`,
