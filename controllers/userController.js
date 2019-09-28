@@ -1,14 +1,13 @@
 const User = require('../models/User')
 const bcrypt = require('bcryptjs')
+const moment = require('moment')
 
 class UserController {
     async findAll() {
         return User.find({
             deletedAt: null
         }, { password: 0 })
-        .then(users => {
-            return users
-        })
+        .then(users => users)
         .catch(error => {
             return {
                 hasError: true,
@@ -21,9 +20,7 @@ class UserController {
         return User.findOne({
             _id: id
         })
-            .then(user => {
-                return user
-            })
+            .then(user => user)
             .catch(error => {
                 return {
                     hasError: true,
@@ -36,9 +33,7 @@ class UserController {
         return User.findByIdAndUpdate(id, body, {
             new: true
         })
-            .then(user => {
-                return user
-            })
+            .then(user => user)
             .catch(error => {
                 return {
                     hasError: true,
@@ -55,12 +50,27 @@ class UserController {
                     .catch(error => console.log(error))
             })
             .catch(error => console.log(error))
-        return User.findByIdAndUpdate(userId,
-            { password: hashedPassword },
-            { new: true }
-        )
-            .then(user => {
-                return user
+        return User.findByIdAndUpdate(userId, {
+            password: hashedPassword
+        }, {
+            new: true
+        })
+            .then(user => user)
+            .catch(error => {
+                return {
+                    hasError: true,
+                    error
+                }
+            })
+    }
+
+    async delete(id) {
+        const now = moment().format('YYYY-MM-DD hh:mm:ss')
+        return User.updateOne({_id: id}, {
+            deletedAt: now
+        })
+            .then(result => {
+                return result
             })
             .catch(error => {
                 return {

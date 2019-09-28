@@ -18,10 +18,7 @@ adminCheck = (req, res, next) => {
 }
 
 passwordCheck = (req, res, next) => {
-    const {
-        actualPassword,
-        newPassword
-    } = req.body
+    const { actualPassword } = req.body
     if(!actualPassword)
         return res.status(400).json({
             message: 'Contraseña actual vacía'

@@ -35,6 +35,17 @@ router.put('/:id', checkAdminRole, (req, res, next) => {
         })
 })
 
+router.delete('/:id', checkAdminRole, (req, res, next) => {
+    userController.delete(req.params.id)
+        .then(result => {
+            next(result)
+        })
+        .catch(error => {
+            res.status(400).json(error)
+        })
+
+})
+
 router.use(checkResponseError)
 
 module.exports = router
